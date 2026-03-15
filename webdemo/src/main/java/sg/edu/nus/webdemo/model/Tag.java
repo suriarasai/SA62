@@ -47,6 +47,10 @@ public class Tag {
 		super();
 		this.name = name;
 	}
+	public Tag() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 

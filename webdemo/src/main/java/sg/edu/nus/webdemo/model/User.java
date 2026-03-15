@@ -28,6 +28,13 @@ public class User {
 	private LocalDate dob;
 	@DateTimeFormat
 	private LocalDateTime createdAt;
+	private Boolean active = Boolean.TRUE;
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 	public Long getId() {
 		return id;
 	}

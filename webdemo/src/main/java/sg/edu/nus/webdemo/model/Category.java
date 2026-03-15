@@ -54,6 +54,10 @@ public class Category {
 		this.name = name;
 		this.description = description;
 	}
+	public Category() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 }
