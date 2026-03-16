@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import lombok.Data;
 import sg.edu.nus.webdemo.model.Category;
 
 @DataJpaTest
+@Data
 @Sql("/data.sql")
 public class CategoryRepositoryTest {
 

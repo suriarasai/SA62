@@ -1,57 +1,45 @@
 package sg.edu.nus.webdemo.model;
 
-import java.util.Objects;
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
+/**
+ * Descriptive label for products (e.g. "Handcrafted", "Premium", "Carbon Steel").
+ *
+ * Associations:
+ *   @ManyToMany ← Product  (many products can share many tags)
+ *                            Product owns the join table product_tags.
+ */
 @Entity
-@Table(name="tag")
+@Table(name = "tags")
 public class Tag {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Tag other = (Tag) obj;
-		return Objects.equals(id, other.id);
-	}
-	public Tag(String name) {
-		super();
-		this.name = name;
-	}
-	public Tag() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String name;
+
+    /** @ManyToMany – inverse (mappedBy); Product is the owner side. */
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<Product> products = new HashSet<>();
+
+    
+    public Tag() {}
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
+   
+    public Long getId()                      { return id; }
+    public void setId(Long id)               { this.id = id; }
+
+    public String getName()                  { return name; }
+    public void setName(String name)         { this.name = name; }
+
+    public Set<Product> getProducts()        { return products; }
+    public void setProducts(Set<Product> p)  { this.products = p; }
 }

@@ -25,7 +25,7 @@ public class SimpleTestForUserCRUD {
 	 @Test
      @DisplayName("Test User Creation")
      void saveUser() {
-		 User u1 = new User("ahbeng", "password", "ahbeng@nus.edu.sg", "AH", "BENG", null, null);
+		 User u1 = new User("ahbeng", "password", "ahbeng@nus.edu.sg", "AH", "BENG", null, null, Boolean.TRUE);
 		 User savedUser = userRepo.save(u1);
 		 em.persistAndFlush(savedUser);
          assertThat(savedUser.getId()).isNotNull().isPositive();
