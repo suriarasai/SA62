@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- th:text in <title> sets the browser tab title dynamically -->
+    <title th:text="'Course Catalog - ' + ${course.name}">Course Detail</title>
+</head>
+<body>
+ 
+    <a th:href="@{/courses}">All Courses</a>
+ 
+    <h1 th:text="${course.name}">Course Name</h1>
+ 
+    <dl>
+			
+        <dt>Instructor</dt>
+        <dd th:text="${course.instructor}">Instructor Name</dd>
+ 
+        <dt>Launch Year</dt>
+        <dd th:text="${course.launchedYear}">2025</dd>
+ 
+        <dt>Company</dt>
+        <dd th:text="${course.company}">Department</dd>
+ 
+        <dt>Fees</dt>
+        <dd th:text="${course.fees}">3</dd>
+ 
+        <dt>Description</dt>
+        <dd th:text="${course.description}">0</dd>
+		
+		<dt>Course Start Date</dt>
+		<dd th:text="${course.startDate}">0</dd>
+		
+    </dl>
+ 
+    <a th:href="@{/courses/add}">Add Another Course</a>
+ 
+</body>
+</html>

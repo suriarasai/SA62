@@ -5,6 +5,8 @@
 
 <h1>Existing Courses</h1>
 <p>This is list all the current Courses in memory.</p>
+<a th:href="@{/}">Back to Home</a>
+
 <div th:if=${#lists.isEmpty(courses)}>  
 	<p> Not current courses to list! Sorry! </p>
 </div>
@@ -16,10 +18,12 @@
                 <th>Name</th>
                 <th>Instructor Name</th>
                 <th>Launched Year</th>
-                <th>Comapny</th>
+                <th>Company</th>
                 <th>Fees</th>
                 <th>Description</th>
                 <th>Start Data</th>
+				<th>Created On</th>
+				<th>Details Link</th>
             </tr>
 			
             <tr th:each="course : ${courses}">
@@ -30,11 +34,20 @@
                 <td th:text="${course.company}">Company</td>
                 <td th:text="${course.fees}">Fees</td>
                 <td th:text="${course.description}">Description</td>
-				<td th:text="${course.startDate}">Start Date</td>
-				<td th:text="${course.createdOn}">Created On</td>
+				<td th:text="${#temporals.format(course.startDate,'dd/MMM/yyyy')}">Start Date</td>
+				<td th:text="${#temporals.format(course.createdOn,'dd/MMM/yyyy HH:mm')}">Created On</td>
+				<td>
+					<!-- Link to detail page, passing course ID in the URL -->
+				   <a th:href="@{/courses/{id}(id=${course.CourseId})}">View Details</a>
+				                </td>
             </tr>
         </table>
+		
+		<!--${#temporals.format(course.startDate,'dd/MMM/yyyy HH:mm')} -->
+
     </div>
+	<br>
+	    <a th:href="@{/courses/add}">Add New Course</a>
 
 </body>
 </html>

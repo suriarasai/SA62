@@ -16,7 +16,6 @@ import sg.edu.nus.coursedemo.model.Course;
 import sg.edu.nus.coursedemo.service.CourseService;
 
 @Controller
-@RequestMapping("/app")
 public class CourseController {
 	
 	private final CourseService courseService;
@@ -33,7 +32,7 @@ public class CourseController {
 	// 1. Home Page
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "home";
     }
  
     // 2. Course List
@@ -52,7 +51,7 @@ public class CourseController {
         return courseService.findById(id)
                 .map(course -> {
                     model.addAttribute("course", course);
-                    return "course-detail";
+                    return "coursedetail";
                 })
                 .orElseGet(() -> {
                     response.setStatus(404);
@@ -64,7 +63,7 @@ public class CourseController {
     @GetMapping("/courses/add")
     public String showAddCourseForm(Model model) {
         model.addAttribute("course", new Course());
-        return "add-course";
+        return "courseform";
     }
  
     // 4b. Process Form Submission

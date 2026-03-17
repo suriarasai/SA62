@@ -17,6 +17,7 @@ public class CourseService {
 	// Service will use association mappings
 	private final ArrayList<Course> courses = new ArrayList<>();
 	private final AtomicLong idCounter = new AtomicLong(1L);
+	//Simulate the database facility named AUTOINCREAMENT
 	public CourseService() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -34,13 +35,15 @@ public class CourseService {
 	}
 	
 	public Optional<Course> findById(Long id) {
-        return courses.stream()
-                      .filter(c -> c.getCourseId().equals(id))
+        return courses.stream()  //3 for loop
+                      .filter(c -> c.getCourseId().equals(id)) //1 logic write
                       .findFirst();
+        // foreach(courses:course) {...}
     }
  
     public void save(Course course) {
         course.setCourseId(idCounter.getAndIncrement());
+        course.setCreatedOn(LocalDateTime.now());
         courses.add(course);
     }
 
