@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">  <!-- Required namespace -->
+<head>
+    <meta charset="UTF-8">
+    <title>Course Catalog - Home</title>
+</head>
+<body>
+ 
+    <h1>University Course Catalog</h1>
+    <p>Browse and register for courses this semester.</p>
+ 
+    <nav>
+        <ul>
+            <!-- th:href is how Thymeleaf generates context-relative URLs -->
+            <li><a th:href="@{/courses}">View All Courses</a></li>
+            <li><a th:href="@{/courses/add}">Add a New Course</a></li>
+        </ul>
+    </nav>
+ 
+</body>
+</html>
