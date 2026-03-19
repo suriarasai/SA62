@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Course Catalog - Add Course</title>
+	<style>
+	        .error { color: red; font-size: 0.9em; }
+	    </style>
 </head>
 <body>
  
@@ -14,64 +17,71 @@
       th:object   - binds the form to the "course" object in the Model
       method=post - HTTP POST
     -->
-    <form th:action="@{/courses/add}"
-          th:object="${course}"
-          method="post">
- 
-        <div>
-            <label for="name">Course Name:</label>
-            <!--
-              th:field="*{name}" is shorthand for:
-                id="name" name="name" th:value="${course.name}"
-              The *{} syntax uses the th:object as the root.
-            -->
-            <input type="text" th:field="*{name}" required>
-        </div>
- 
-        <div>
-            <label for="instructor">Instructor:</label>
-            <input type="text" th:field="*{instructor}" required>
-        </div>
- 
-        <div>
-            <label for="year">Launch Year:</label>
-            <input type="number" th:field="*{launchedYear}"
-                   min="2000" max="2099" required>
-        </div>
- 
-        <div>
-            <label for="company">Company:</label>
-            <select th:field="*{company}">
-                <option value="">-- Select department --</option>
-                <option value="NUS ISS">Institute of Systems Sciences</option>
-                <option value="NUS SOC">School of Computing</option>
-                <option value="NUS SOE">School of Engineering</option>
-                <option value="NUS ARTS">School of Arts</option>
-                <option value="NUS Law">Law School</option>
-                <option value="NUS Medicine">School of Medicine</option>
-            </select>
-        </div>
-		
-		<div>
-		    <label for="fees">Fees:</label>
-		    <input type="number" th:field="*{fees}"
-		           min="200" max="3000" required>
-		</div>
-		<div>
-		    <label for="description">Description:</label>
-		    <input type="textarea" th:field="*{description}" >
-		</div>
-		
-		<div>
-		    <label for="startDate">Start Date:</label>
-		    <input type="date" th:field="*{startDate}">
-		</div>
-		
+	<form th:action="@{/courses/add}" th:object="${course}" method="post">
 
-        <br>
-        <button type="submit">Save Course</button>
- 
-    </form>
+	       <div>
+	           <label>Course Name:</label>
+	           <input type="text" th:field="*{name}" required>
+	           <!-- th:errors shows the message from your annotation -->
+	           <span class="error" th:if="${#fields.hasErrors('name')}"
+	                 th:errors="*{name}"></span>
+	       </div>
+
+	       <div>
+	           <label>Instructor:</label>
+	           <input type="text" th:field="*{instructor}">
+	           <span class="error" th:if="${#fields.hasErrors('instructor')}"
+	                 th:errors="*{instructor}"></span>
+	       </div>
+
+	       <div>
+	           <label>Launch Year:</label>
+	           <input type="number" th:field="*{launchedYear}" min="2000" max="2099">
+	           <span class="error" th:if="${#fields.hasErrors('launchedYear')}"
+	                 th:errors="*{launchedYear}"></span>
+	       </div>
+
+	       <div>
+	           <label>Company:</label>
+	           <select th:field="*{company}">
+	               <option value="">-- Select department --</option>
+	               <option value="NUS ISS">Institute of Systems Sciences</option>
+	               <option value="NUS SOC">School of Computing</option>
+	               <option value="NUS SOE">School of Engineering</option>
+	               <option value="NUS ARTS">School of Arts</option>
+	               <option value="NUS Law">Law School</option>
+	               <option value="NUS Medicine">School of Medicine</option>
+	           </select>
+	           <span class="error" th:if="${#fields.hasErrors('company')}"
+	                 th:errors="*{company}"></span>
+	       </div>
+
+	       <div>
+	           <label>Fees:</label>
+	           <input type="number" th:field="*{fees}" min="200" max="3000">
+	           <span class="error" th:if="${#fields.hasErrors('fees')}"
+	                 th:errors="*{fees}"></span>
+	       </div>
+
+	       <div>
+	           <label>Description:</label>
+	           <textarea th:field="*{description}"></textarea>
+	           <span class="error" th:if="${#fields.hasErrors('description')}"
+	                 th:errors="*{description}"></span>
+	       </div>
+
+	       <div>
+	           <label>Start Date:</label>
+	           <input type="date" th:field="*{startDate}">
+	           <span class="error" th:if="${#fields.hasErrors('startDate')}"
+	                 th:errors="*{startDate}"></span>
+	       </div>
+
+	       <br>
+	       <button type="submit">Save Course</button>
+
+	   </form>
+
  
 </body>
 </html>

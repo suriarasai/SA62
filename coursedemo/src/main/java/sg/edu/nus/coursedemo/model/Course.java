@@ -4,15 +4,43 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+
+
 public class Course {
 	
 	private Long courseId;
+	//@NotBlank = must not be null, empty, or whitespace (for Strings)
+    @NotBlank(message = "Course name is required")
+    @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
 	private String name;
+	@NotBlank(message = "Instructor name is required")
 	private String instructor;
+	//@NotNull = must not be null (use for non-String types like Long, Double)
+    @NotNull(message = "Launched year is required")
+    @Min(value = 2000, message = "Year must be 2000 or later")
+    @Max(value = 2099, message = "Year must be 2099 or earlier")
 	private Long launchedYear;
+	@NotBlank(message = "Please select a company/school")
 	private String company;
+	@NotNull(message = "Fees are required")
+    @DecimalMin(value = "200.0", message = "Fees must be at least $200")
+    @DecimalMax(value = "3000.0", message = "Fees cannot exceed $3000")
 	private Double fees;
+	//@Size works on Strings — limit description length
+    @Size(max = 500, message = "Description cannot exceed 500 characters")
 	private String description;
+	//@NotNull ensures a date is picked
+    @NotNull(message = "Start date is required")
+    @Future(message="The start date must refer to future date")
 	private LocalDate startDate;
 	private LocalDateTime createdOn;
 	//Constructors
