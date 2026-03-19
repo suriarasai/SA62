@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 //import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.edu.nus.coursedemo.model.Course;
+import sg.edu.nus.coursedemo.model.User;
 import sg.edu.nus.coursedemo.service.CourseService;
 
 @Controller
@@ -75,7 +77,9 @@ public class CourseController {
     @GetMapping("/courses/{id}")
     public String courseDetail(@PathVariable Long id,
                                Model model,
+  //                             @SessionAttribute User user,
                                HttpServletResponse response) {
+  //  	System.out.println("User Details"+user.toString());
         return courseService.findById(id)
                 .map(course -> {
                     model.addAttribute("course", course);
