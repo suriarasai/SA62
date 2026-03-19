@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.edu.nus.coursedemo.model.Course;
 import sg.edu.nus.coursedemo.service.CourseService;
@@ -24,6 +25,20 @@ public class CourseController {
 	 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
+    }
+    
+    // HELPER — isLoggedIn()
+    //
+    // session.getAttribute(key)
+    //   → retrieves a value stored in the session by its key.
+    //   → returns null if the key does not exist (user not logged in).
+    //
+    // We call this in every protected route below.
+    // ------------------------------------------------------------------
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("loggedInUser") != null;
+         //  If "loggedInUser" was set during login, user is authenticated.
+        //  If it's null, there is no active session for this user.
     }
 	
 	/*
@@ -39,7 +54,18 @@ public class CourseController {
  
     // 2. Course List
     @GetMapping("/courses")
-    public String listCourses(Model model) {
+    public String listCourses(Model model,
+    		HttpSession session,
+            RedirectAttributes redirectAttrs)
+       {
+        // Guard: redirect to login if not logged in
+        if (!isLoggedIn(session)) {
+            redirectAttrs.addFlashAttribute("errorMessage",
+                    "Please log in to view courses.");
+            return "redirect:/login";
+        }
+     	
+    	
         List<Course> allCourses = courseService.findAll();
         model.addAttribute("courses", allCourses);
         return "courses";

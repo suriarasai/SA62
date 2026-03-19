@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <!-- th:text in <title> sets the browser tab title dynamically -->
     <title th:text="'Course Catalog - ' + ${course.name}">Course Detail</title>
-</head>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	</head>
 <body>
- 
+	<div th:insert="~{header :: topbar}"/>
     <a th:href="@{/courses}">All Courses</a>
  
     <h1 th:text="${course.name}">Course Name</h1>

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Course Catalog - Home</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
- 
+	<div th:insert="~{header :: topbar}"/>
     <h1>University Course Catalog</h1>
     <p>Browse and register for courses this semester.</p>
  
@@ -16,6 +17,6 @@
             <li><a th:href="@{/courses/add}">Add a New Course</a></li>
         </ul>
     </nav>
- 
+	<div th:insert="~{footer :: copy}"/>
 </body>
 </html>

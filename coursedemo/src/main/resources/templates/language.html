@@ -3,8 +3,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Language Demo</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+	<div th:insert="~{header :: topbar}"/>
 <h1 th:utext="#{languagepage.hello}">Hello</h1>
 <h2 th:utext="#{languagepage.greeting}">Greetings</h2>
 <br />
@@ -12,5 +14,6 @@
 <br />
 <h2 th:utext="#{languagepage.bye}">Bye</h2>
 <br />
+<div th:insert="~{footer :: copy}"/>
 </body>
 </html>

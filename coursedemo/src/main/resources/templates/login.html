@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>	
+<body>
+	<div th:insert="~{header :: topbar}"/>
+<div class="card">
+ 
+    <h2>Course Demo — Login</h2>
+ 
+    <!--
+        Flash messages from RedirectAttributes appear here.
+        th:if checks if the attribute exists before rendering.
+    -->
+    <div th:if="${errorMessage}"  class="error"   th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="success" th:text="${successMessage}"></div>
+    <div th:if="${logoutMessage}"  class="logout"  th:text="${logoutMessage}"></div>
+ 
+    <!--
+        Standard HTML form — posts username and password to /login.
+        No th:object needed here because we are NOT binding to a model object;
+        we use @RequestParam in the controller instead.
+    -->
+    <form action="/login" method="post">
+ 
+        <label for="username">Username</label>
+        <input type="text"     id="username" name="username"
+               placeholder="e.g. alice" required autofocus>
+ 
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"
+               placeholder="password" required>
+ 
+        <button type="submit">Log In</button>
+ 
+    </form>
+ 
+    <!-- Demo credentials hint — remove this in a real application -->
+    <div class="hint">
+        <strong>Demo accounts:</strong><br>
+        Username: <code>alice</code> &nbsp; Password: <code>pass123</code> (ADMIN)<br>
+        Username: <code>bob</code>   &nbsp; Password: <code>pass456</code> (USER) <br>
+		Username: <code>clara</code>   &nbsp; Password: <code>pass789</code> (USER)
+    </div>
+ 
+</div>
+<div th:insert="~{footer :: copy}"/>
+</body>
+</html>

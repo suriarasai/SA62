@@ -1,7 +1,13 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
+<head>
 	<title name="title" value="Course Listing Page"> Course Listing Page </title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
+<div th:insert="~{header :: topbar}"/>
+
 
 <h1>Existing Courses</h1>
 <p>This is list all the current Courses in memory.</p>
@@ -48,6 +54,6 @@
     </div>
 	<br>
 	    <a th:href="@{/courses/add}">Add New Course</a>
-
+		<div th:insert="~{footer :: copy}"/>
 </body>
 </html>

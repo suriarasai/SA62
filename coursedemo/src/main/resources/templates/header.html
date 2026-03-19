@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">  <!-- Required namespace -->
+<head> <link rel="stylesheet" th:href="@{/css/style.css}">
+	</head>
+<div class="topbar" th:fragment="topbar">
+    <span>
+        Course Catalog &nbsp;|&nbsp;
+        <!--
+            th:if="${loggedInUser != null}" — only show name when someone is logged in.
+            This guards against NullPointerException if the page is somehow reached
+            without a session (shouldn't happen with our guard, but good practice).
+        -->
+	   </span>
+        <span th:if="${session.loggedInUser != null}">
+            Hello, <strong th:text="${session.loggedInUser.fullName}">User</strong>
+            &nbsp;(<span th:text="${session.loggedInUser.role}">ROLE</span>)
+        </span>
+ 		<span>
+
+    <!-- Logout link — calls GET /logout which invalidates the session -->
+    <a th:href="@{/logout}"> Logout</a>
+   </span>
+</div>
+</html>
