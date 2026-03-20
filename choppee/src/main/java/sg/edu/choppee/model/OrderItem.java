@@ -31,7 +31,7 @@ public class OrderItem {
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
 
-    // ── Associations ──────────────────────────────────────────────────────────
+    //  Associations 
 
     /** @ManyToOne – FK order_id. Many items belong to one order. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,13 +43,13 @@ public class OrderItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    // ── Business helpers ──────────────────────────────────────────────────────
+    //  Business helpers 
 
     public Double getSubtotal() {
         return unitPrice * quantity;
     }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public OrderItem() {}
 
@@ -60,7 +60,7 @@ public class OrderItem {
         this.unitPrice = unitPrice;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                              { return id; }
     public void setId(Long id)                       { this.id = id; }

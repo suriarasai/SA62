@@ -29,7 +29,7 @@ public class CartItem {
     @Column(name = "added_at")
     private LocalDateTime addedAt;
 
-    // ── Associations ──────────────────────────────────────────────────────────
+    //  Associations 
 
     /** @ManyToOne – FK cart_id. Many items belong to one cart. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,21 +41,21 @@ public class CartItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    //  Lifecycle 
 
     @PrePersist
     protected void onCreate() {
         this.addedAt = LocalDateTime.now();
     }
 
-    // ── Business helpers ──────────────────────────────────────────────────────
+    //  Business helpers 
 
     public Double getSubtotal() {
         if (product == null || quantity == null) return 0.0;
         return product.getEffectivePrice() * quantity;
     }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public CartItem() {}
 
@@ -65,7 +65,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                         { return id; }
     public void setId(Long id)                  { this.id = id; }

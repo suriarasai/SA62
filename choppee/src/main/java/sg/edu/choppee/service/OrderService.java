@@ -39,7 +39,7 @@ public class OrderService {
     @Autowired private UserRepository    userRepository;    // used to load the buying User
     @Autowired private ProductRepository productRepository; // used to deduct stock
 
-    // ── Place Order ───────────────────────────────────────────────────────────
+    //  Place Order 
 
     /**
      * The most important method in the application.
@@ -168,7 +168,7 @@ public class OrderService {
         return saved;
     }
 
-    // ── Query operations ──────────────────────────────────────────────────────
+    //  Query operations 
 
     /**
      * Returns all orders for the given user, newest first.

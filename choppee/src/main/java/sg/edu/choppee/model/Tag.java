@@ -26,7 +26,7 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Product> products = new HashSet<>();
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public Tag() {}
 
@@ -34,7 +34,7 @@ public class Tag {
         this.name = name;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                      { return id; }
     public void setId(Long id)               { this.id = id; }

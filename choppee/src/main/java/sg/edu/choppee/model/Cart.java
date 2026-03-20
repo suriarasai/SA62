@@ -23,7 +23,7 @@ public class Cart {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // ── Associations ──────────────────────────────────────────────────────────
+    //  Associations 
 
     /**
      * @OneToOne – owner side; FK user_id lives in the carts table.
@@ -38,14 +38,14 @@ public class Cart {
                fetch = FetchType.LAZY)
     private List<CartItem> items = new ArrayList<>();
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    //  Lifecycle 
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ── Business helpers ──────────────────────────────────────────────────────
+    //  Business helpers 
 
     public Double getTotal() {
         return items.stream()
@@ -57,7 +57,7 @@ public class Cart {
         return items.stream().mapToInt(CartItem::getQuantity).sum();
     }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public Cart() {}
 
@@ -65,7 +65,7 @@ public class Cart {
         this.user = user;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                         { return id; }
     public void setId(Long id)                  { this.id = id; }

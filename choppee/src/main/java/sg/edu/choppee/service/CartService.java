@@ -56,7 +56,7 @@ public class CartService {
     @Autowired private CartItemRepository cartItemRepository;  // manages CartItem entities
     @Autowired private ProductRepository  productRepository;   // used to look up products
 
-    // ── Read operations ───────────────────────────────────────────────────────
+    //  Read operations 
 
     /**
      * Returns the Cart that belongs to this user.
@@ -104,7 +104,7 @@ public class CartService {
                              .orElse(0);
     }
 
-    // ── Write operations ──────────────────────────────────────────────────────
+    //  Write operations 
 
     /**
      * Adds the specified product to the user's cart.

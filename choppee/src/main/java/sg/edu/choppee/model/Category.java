@@ -28,7 +28,7 @@ public class Category {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public Category() {}
 
@@ -37,7 +37,7 @@ public class Category {
         this.description = description;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                          { return id; }
     public void setId(Long id)                   { this.id = id; }

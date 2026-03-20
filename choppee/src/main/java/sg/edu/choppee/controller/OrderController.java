@@ -27,13 +27,13 @@ public class OrderController {
     @Autowired private OrderService orderService;
     @Autowired private CartService  cartService;
 
-    // ── Guard ─────────────────────────────────────────────────────────────────
+    //  Guard 
 
     private Long requireLogin(HttpSession session) {
         return (Long) session.getAttribute("userId");
     }
 
-    // ── Checkout form ─────────────────────────────────────────────────────────
+    //  Checkout form 
 
     @GetMapping("/checkout")
     public String checkoutForm(HttpSession session, Model model) {
@@ -47,7 +47,7 @@ public class OrderController {
         return "checkout";
     }
 
-    // ── Place the order (core purchase logic) ─────────────────────────────────
+    //  Place the order (core purchase logic) 
 
     @PostMapping("/checkout/place")
     public String placeOrder(@RequestParam String shippingAddress,
@@ -67,7 +67,7 @@ public class OrderController {
         }
     }
 
-    // ── Order success confirmation ─────────────────────────────────────────────
+    //  Order success confirmation 
 
     @GetMapping("/orders/{id}/success")
     public String orderSuccess(@PathVariable Long id, HttpSession session, Model model) {
@@ -79,7 +79,7 @@ public class OrderController {
         return "order-success";
     }
 
-    // ── Order history ─────────────────────────────────────────────────────────
+    //  Order history 
 
     @GetMapping("/orders")
     public String orderHistory(HttpSession session, Model model) {
@@ -91,7 +91,7 @@ public class OrderController {
         return "orders";
     }
 
-    // ── Order detail ──────────────────────────────────────────────────────────
+    // Order detail 
 
     @GetMapping("/orders/{id}")
     public String orderDetail(@PathVariable Long id, HttpSession session, Model model) {

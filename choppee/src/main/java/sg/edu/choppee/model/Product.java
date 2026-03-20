@@ -58,7 +58,7 @@ public class Product {
 
     private Boolean active;
 
-    // ── Associations ──────────────────────────────────────────────────────────
+    //  Associations 
 
     /** @ManyToOne – many products belong to one category; FK category_id on this table. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -77,7 +77,7 @@ public class Product {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    //  Lifecycle 
 
     @PrePersist
     protected void onCreate() {
@@ -87,7 +87,7 @@ public class Product {
         if (this.stockQuantity   == null)  this.stockQuantity   = 0;
     }
 
-    // ── Business helpers ──────────────────────────────────────────────────────
+    //  Business helpers 
 
     /** Effective price after applying discount. */
     public Double getEffectivePrice() {
@@ -99,11 +99,11 @@ public class Product {
         return stockQuantity != null && stockQuantity > 0;
     }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public Product() {}
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                             { return id; }
     public void setId(Long id)                      { this.id = id; }

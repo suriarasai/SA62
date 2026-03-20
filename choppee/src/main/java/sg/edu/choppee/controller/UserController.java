@@ -22,7 +22,7 @@ public class UserController {
 
     @Autowired private UserService userService;
 
-    // ── Login ─────────────────────────────────────────────────────────────────
+    // Login 
 
     @GetMapping("/login")
     public String loginForm(@RequestParam(required = false) String redirect,
@@ -49,7 +49,7 @@ public class UserController {
                 });
     }
 
-    // ── Register ──────────────────────────────────────────────────────────────
+    //  Register 
 
     @GetMapping("/register")
     public String registerForm() {
@@ -78,7 +78,7 @@ public class UserController {
         }
     }
 
-    // ── Logout ────────────────────────────────────────────────────────────────
+    //  Logout 
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

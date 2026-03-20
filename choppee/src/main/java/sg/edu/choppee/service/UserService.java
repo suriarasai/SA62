@@ -43,7 +43,7 @@ public class UserService {
     @Autowired private UserRepository userRepository; // manages User entities
     @Autowired private CartRepository cartRepository; // manages Cart entities
 
-    // ── Registration ──────────────────────────────────────────────────────────
+    //  Registration 
 
     /**
      * Registers a new user and creates an empty cart for them.
@@ -109,7 +109,7 @@ public class UserService {
         return saved;
     }
 
-    // ── Authentication ────────────────────────────────────────────────────────
+    //  Authentication 
 
     /**
      * Checks username + password and returns the matching User on success.

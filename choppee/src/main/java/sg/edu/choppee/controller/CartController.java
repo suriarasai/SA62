@@ -18,7 +18,7 @@ public class CartController {
 
     @Autowired private CartService cartService;
 
-    // ── Helper ────────────────────────────────────────────────────────────────
+    //  Helper 
 
     private Long requireLogin(HttpSession session, RedirectAttributes ra) {
         Long userId = (Long) session.getAttribute("userId");
@@ -26,7 +26,7 @@ public class CartController {
         return userId;
     }
 
-    // ── View cart ─────────────────────────────────────────────────────────────
+    //  View cart 
 
     @GetMapping
     public String viewCart(HttpSession session, Model model) {
@@ -37,7 +37,7 @@ public class CartController {
         return "cart";
     }
 
-    // ── Add to cart ───────────────────────────────────────────────────────────
+    //  Add to cart 
 
     @PostMapping("/add")
     public String addToCart(@RequestParam Long productId,
@@ -56,7 +56,7 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    // ── Update quantity ───────────────────────────────────────────────────────
+    //  Update quantity 
 
     @PostMapping("/update")
     public String updateQuantity(@RequestParam Long cartItemId,
@@ -74,7 +74,7 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    // ── Remove item ───────────────────────────────────────────────────────────
+    //  Remove item 
 
     @PostMapping("/remove")
     public String removeItem(@RequestParam Long cartItemId,

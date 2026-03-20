@@ -53,7 +53,7 @@ public class User {
 
     private Boolean active;
 
-    // ── Associations ──────────────────────────────────────────────────────────
+    //  Associations 
 
     /** @OneToOne – bidirectional; Cart holds the FK (user_id). */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -63,7 +63,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PurchaseOrder> orders = new ArrayList<>();
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    //  Lifecycle 
 
     @PrePersist
     protected void onCreate() {
@@ -71,7 +71,7 @@ public class User {
         if (this.active == null) this.active = true;
     }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public User() {}
 
@@ -85,7 +85,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                       { return id; }
     public void setId(Long id)                { this.id = id; }

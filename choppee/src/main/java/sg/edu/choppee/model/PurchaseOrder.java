@@ -53,7 +53,7 @@ public class PurchaseOrder {
     @Column(name = "delivered_at")
     private LocalDateTime deliveredAt;
 
-    // ── Associations ──────────────────────────────────────────────────────────
+    //  Associations 
 
     /** @ManyToOne – many orders belong to one user; FK user_id. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,7 +64,7 @@ public class PurchaseOrder {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> items = new ArrayList<>();
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    //  Lifecycle 
 
     @PrePersist
     protected void onCreate() {
@@ -72,17 +72,17 @@ public class PurchaseOrder {
         if (this.status == null) this.status = OrderStatus.PENDING;
     }
 
-    // ── Business helpers ──────────────────────────────────────────────────────
+    //  Business helpers 
 
     public int getTotalQuantity() {
         return items.stream().mapToInt(OrderItem::getQuantity).sum();
     }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
+    //  Constructors 
 
     public PurchaseOrder() {}
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
+    //  Getters & Setters 
 
     public Long getId()                              { return id; }
     public void setId(Long id)                       { this.id = id; }
