@@ -52,7 +52,10 @@ public class UserController {
     //  Register 
 
     @GetMapping("/register")
-    public String registerForm() {
+    public String registerForm(HttpSession session) {
+    	
+        session.setAttribute("userId",   "");
+        session.setAttribute("username", "");
         return "register";
     }
 

@@ -64,3 +64,5 @@ choppee/target/classes/templates/register.html
 choppee/target/maven-archiver/pom.properties
 choppee/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 choppee/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+choppee/target/classes/application.properties
+choppee/target/classes/META-INF/maven/sg.edu.choppee/choppee/pom.properties
