@@ -66,3 +66,4 @@ choppee/target/maven-status/maven-compiler-plugin/compile/default-compile/create
 choppee/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 choppee/target/classes/application.properties
 choppee/target/classes/META-INF/maven/sg.edu.choppee/choppee/pom.properties
+restfulapp/.mvn/wrapper/maven-wrapper.properties
