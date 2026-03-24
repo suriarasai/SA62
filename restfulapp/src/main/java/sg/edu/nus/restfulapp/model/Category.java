@@ -25,8 +25,8 @@ public class Category {
     private String description;
 
     /** @OneToMany – inverse side; Product holds the FK (category_id). */
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Product> products = new ArrayList<>();
+    //@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    //private List<Product> products = new ArrayList<>();
 
     //  Constructors 
 
@@ -48,6 +48,6 @@ public class Category {
     public String getDescription()               { return description; }
     public void setDescription(String d)         { this.description = d; }
 
-    public List<Product> getProducts()           { return products; }
-    public void setProducts(List<Product> prods) { this.products = prods; }
+    //public List<Product> getProducts()           { return products; }
+    //public void setProducts(List<Product> prods) { this.products = prods; }
 }
