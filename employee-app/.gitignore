@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Angular build output
+dist/
+.angular/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files (keep templates, ignore real ones)
+src/environments/environment.prod.ts
+
+# Logs
+*.log
+npm-debug.log*

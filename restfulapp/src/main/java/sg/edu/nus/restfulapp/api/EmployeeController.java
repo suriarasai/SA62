@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,19 +21,20 @@ import sg.edu.nus.restfulapp.repository.EmployeeRepository;
 
 @RestController
 @RequestMapping("/api/employees")
+@CrossOrigin(origins = "http://localhost:4200") // Angular 4200
 public class EmployeeController {
 
 	@Autowired
 	EmployeeRepository empRepo;
 
-	// ─── GET All Employees ────────────────────────────────────────────────────
+	//  GET All Employees 
 	@GetMapping
 	public ResponseEntity<List<Employee>> getAllEmployees() {
 
 		return ResponseEntity.ok(empRepo.findAll());
 	}
 
-	// ─── GET Employee by ID ───────────────────────────────────────────────────
+	// GET Employee by ID 
 	@GetMapping("/{id}")
 	public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
 
@@ -41,7 +43,7 @@ public class EmployeeController {
 		return employee.map(ResponseEntity::ok).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
-	// ─── POST Create Employee ─────────────────────────────────────────────────
+	//  POST Create Employee 
 	@PostMapping
 	public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
 
@@ -49,25 +51,19 @@ public class EmployeeController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(employee);
 	}
 
-	// ─── PUT Update Employee ──────────────────────────────────────────────────
+	// PUT Update Employee 
 	@PutMapping("/{id}")
 	public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+		
+		return empRepo.findById(id).map(existing -> {
+            //updatedEmployee.setId(id);
+            return ResponseEntity.ok(empRepo.save(updatedEmployee));
+        }).orElse(ResponseEntity.notFound().build());
 
-		Optional<Employee> employee = empRepo.findById(id);
-		if (employee.isPresent()) {
-			employee.get().setId(updatedEmployee.getId());
-			employee.get().setName(updatedEmployee.getName());
-			employee.get().setDepartment(updatedEmployee.getDepartment());
-			employee.get().setSalary(updatedEmployee.getSalary());
-			employee.get().setDesignation(updatedEmployee.getDesignation());
-			empRepo.save(employee.get());
-			return ResponseEntity.ok(employee.get());
-		}
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		
 	}
 
-	// ─── DELETE Employee ──────────────────────────────────────────────────────
+	// DELETE Employee 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
 		Optional<Employee> employee = empRepo.findById(id);

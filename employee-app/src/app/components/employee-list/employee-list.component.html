@@ -1,0 +1,76 @@
+<!--
+  employee-list.component.html
+
+  Template for EmployeeListComponent.
+
+  Layout:
+    1. Header row with title and an "Add Employee" button
+    2. Feedback message bar (conditionally shown, colour driven by isSuccess flag)
+    3. "No employees" placeholder when the array is empty
+    4. Table of employees (shown when array has items) with Edit / Delete actions
+
+  Angular directives used:
+    *ngIf       – conditionally shows/hides elements
+    *ngFor      – iterates over the employees array to render table rows
+    [ngClass]   – applies CSS class dynamically based on a component property
+    (click)     – binds a DOM click event to a component method
+-->
+
+<div class="list-container">
+
+  <!-- ── Header ──────────────────────────────────────────────────────── -->
+  <div class="list-header">
+    <h2>Employees</h2>
+    <!-- Clicking this emits null via editEmployee, telling AppComponent
+         to show the form in "create new" mode -->
+    <button class="btn btn-primary" (click)="onAddNew()">+ Add Employee</button>
+  </div>
+
+  <!-- ── Feedback message bar ────────────────────────────────────────── -->
+  <!-- Only rendered when message is non-empty.
+       [ngClass] toggles 'msg-success' (green) vs 'msg-error' (red). -->
+  <div *ngIf="message"
+       class="msg"
+       [ngClass]="isSuccess ? 'msg-success' : 'msg-error'">
+    {{ message }}
+  </div>
+
+  <!-- ── Empty state ─────────────────────────────────────────────────── -->
+  <!-- Shown when employees array is empty after loading -->
+  <p *ngIf="employees.length === 0" class="empty-state">
+    No employees found. Add one to get started.
+  </p>
+
+  <!-- ── Employees table ─────────────────────────────────────────────── -->
+  <!-- Hidden while the array is empty to avoid showing an empty table -->
+  <table *ngIf="employees.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Salary (SGD)</th>
+        <th>Designation</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- *ngFor renders one <tr> per Employee object in the array -->
+      <tr *ngFor="let emp of employees">
+        <td>{{ emp.id }}</td>
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.department }}</td>
+        <!-- number pipe formats salary to 2 decimal places -->
+        <td>{{ emp.salary | number:'1.2-2' }}</td>
+        <td>{{ emp.designation }}</td>
+        <td class="actions">
+          <!-- Passes the full employee object to the edit handler -->
+          <button class="btn btn-secondary" (click)="onEdit(emp)">Edit</button>
+          <!-- Passes only the id to the delete handler -->
+          <button class="btn btn-danger"    (click)="onDelete(emp.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

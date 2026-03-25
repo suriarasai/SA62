@@ -1,0 +1,107 @@
+<!--
+  employee-form.component.html
+
+  Template for EmployeeFormComponent.
+  Shared between CREATE and EDIT modes – the heading and button label change
+  based on the isEditMode flag set in the component class.
+
+  Angular features used:
+    [formGroup]       – binds the <form> element to the reactive FormGroup
+    formControlName   – links each input to its FormControl
+    (ngSubmit)        – binds the form submit event to onSubmit() method
+    *ngIf             – conditionally shows field-level validation error messages
+    [ngClass]         – dynamically applies CSS class (success/error colour) to message bar
+    isInvalid()       – component helper that checks invalid + touched state
+-->
+
+<div class="form-container">
+
+  <!-- ── Form heading (changes based on mode) ────────────────────────── -->
+  <h2>{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h2>
+
+  <!-- ── Feedback message bar ────────────────────────────────────────── -->
+  <!-- Shown only when the message string is non-empty -->
+  <div *ngIf="message"
+       class="msg"
+       [ngClass]="isSuccess ? 'msg-success' : 'msg-error'">
+    {{ message }}
+  </div>
+
+  <!-- [formGroup] connects this <form> to employeeForm in the component -->
+  <!-- (ngSubmit) calls onSubmit() instead of the default browser form POST -->
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+    <!-- ── Name (required) ───────────────────────────────────────────── -->
+    <div class="form-group">
+      <label for="name">Name <span class="required">*</span></label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="e.g. Ah Beng"
+        [class.input-error]="isInvalid('name')"
+      />
+      <!-- Error message: only shown when the field is touched and empty -->
+      <span class="error-msg" *ngIf="isInvalid('name')">Name is required.</span>
+    </div>
+
+    <!-- ── Department ────────────────────────────────────────────────── -->
+    <div class="form-group">
+      <label for="department">Department</label>
+      <input
+        id="department"
+        type="text"
+        formControlName="department"
+        placeholder="e.g. Engineering"
+      />
+    </div>
+
+    <!-- ── Salary (min: 5500) ────────────────────────────────────────── -->
+    <div class="form-group">
+      <label for="salary">Salary (SGD) <span class="required">*</span></label>
+      <input
+        id="salary"
+        type="number"
+        formControlName="salary"
+        placeholder="Minimum 5500.00"
+        step="0.01"
+        [class.input-error]="isInvalid('salary')"
+      />
+      <!-- Shows a specific message depending on which validator failed -->
+      <span class="error-msg" *ngIf="isInvalid('salary')">
+        <!-- Validators.required message -->
+        <ng-container *ngIf="employeeForm.get('salary')?.errors?.['required']">
+          Salary is required.
+        </ng-container>
+        <!-- Validators.min(5500) message -->
+        <ng-container *ngIf="employeeForm.get('salary')?.errors?.['min']">
+          Salary must be at least SGD 5,500.00 (backend constraint).
+        </ng-container>
+      </span>
+    </div>
+
+    <!-- ── Designation ───────────────────────────────────────────────── -->
+    <div class="form-group">
+      <label for="designation">Designation</label>
+      <input
+        id="designation"
+        type="text"
+        formControlName="designation"
+        placeholder="e.g. Senior Developer"
+      />
+    </div>
+
+    <!-- ── Action buttons ────────────────────────────────────────────── -->
+    <div class="form-actions">
+      <!-- Submit is labelled dynamically based on mode -->
+      <button type="submit" class="btn btn-primary">
+        {{ isEditMode ? 'Update Employee' : 'Create Employee' }}
+      </button>
+      <!-- Cancel emits the cancelled event; navigates back to list -->
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+
+  </form>
+</div>
