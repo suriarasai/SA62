@@ -1,0 +1,189 @@
+<!-- ============================================================
+     employee-list.component.html
+     Demonstrates all four Angular 21 signal binding patterns.
+     ============================================================ -->
+
+<div class="page-wrapper">
+
+  <!-- PAGE TITLE -->
+  <h1 class="page-title">Employees</h1>
+
+  <!--
+    INTERPOLATION  {{ signal() }}
+    Reads two computed signals from the service to display counts.
+  -->
+  <p class="page-subtitle">
+    {{ filtered().length }} of {{ svc.total() }} employees
+    &nbsp;|&nbsp;
+    Avg. salary: ${{ svc.avgSalary() | number:'1.0-0' }}
+  </p>
+
+  <!-- FEEDBACK BANNERS ──────────────────────────────────────── -->
+
+  <!-- INTERPOLATION: {{ svc.error() }} -->
+  @if (svc.error()) {
+    <div class="alert alert-error">{{ svc.error() }}</div>
+  }
+
+  @if (deleteMsg()) {
+    <!--
+      PROPERTY BINDING  [class.alert-ok]="signal()"
+      The CSS class is toggled based on the signal's .ok property.
+    -->
+    <div class="alert"
+         [class.alert-ok]="deleteMsg()!.ok"
+         [class.alert-error]="!deleteMsg()!.ok">
+      <!-- INTERPOLATION: nested property of a signal value -->
+      {{ deleteMsg()!.text }}
+    </div>
+  }
+
+  <!-- TOOLBAR ───────────────────────────────────────────────── -->
+  <div class="toolbar">
+
+    <!--
+      EVENT BINDING   (input)="signal.set(...)"
+      Every keystroke writes the input's value into the searchTerm signal.
+      The filtered() computed signal reacts immediately.
+
+      PROPERTY BINDING  [value]="searchTerm()"
+      Seeds the input with the current signal value (useful if the signal
+      is set from outside this element).
+
+      This pair together forms the Two-Way Binding pattern without needing
+      [(ngModel)]. Angular 21's model() API formalises this for components.
+    -->
+    <input
+      class="search-input"
+      type="search"
+      placeholder="Search name, dept, designation..."
+      [value]="searchTerm()"
+      (input)="searchTerm.set(getVal($event))"
+    />
+
+    <!-- PROPERTY BINDING  [routerLink] builds the path dynamically -->
+    <a class="btn" routerLink="/employees/new">+ Add Employee</a>
+  </div>
+
+  <!-- LOADING STATE ─────────────────────────────────────────── -->
+
+  <!-- INTERPOLATION of boolean signal: svc.isLoading() -->
+  @if (svc.isLoading()) {
+    <p class="status-loading">Loading...</p>
+  }
+
+  <!-- EMPLOYEE TABLE ────────────────────────────────────────── -->
+  @if (!svc.isLoading()) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Salary (SGD)</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!--
+            @for with trackBy: iterates the filtered() computed signal.
+            The table re-renders automatically whenever searchTerm or
+            the employee list changes — no manual subscription needed.
+          -->
+          @for (emp of filtered(); track emp.id) {
+            <tr>
+              <!-- INTERPOLATION: {{ emp.id }}, {{ emp.name }}, etc. -->
+              <td>{{ emp.id }}</td>
+              <td>{{ emp.name }}</td>
+              <td>{{ emp.department }}</td>
+              <td>{{ emp.designation }}</td>
+              <td>{{ emp.salary | number:'1.2-2' }}</td>
+              <td class="col-actions">
+                <div class="action-btns">
+                  <!--
+                    PROPERTY BINDING  [routerLink]
+                    Passes the employee id into the route path expression.
+                  -->
+                  <a class="btn btn-sm btn-outline"
+                     [routerLink]="['/employees', emp.id, 'edit']">
+                    Edit
+                  </a>
+
+                  <!--
+                    EVENT BINDING  (click)="fn()"
+                    Clicking calls askDelete(), which sets pendingDeleteId signal.
+                  -->
+                  <button class="btn btn-sm btn-delete"
+                          (click)="askDelete(emp.id!)">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+
+          @empty {
+            <tr>
+              <td colspan="6">
+                <p class="status-empty">No employees match your search.</p>
+              </td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>
+
+<!-- CONFIRM DELETE DIALOG ─────────────────────────────────────
+     Shown only when pendingDeleteId() is not null.
+     Demonstrates PROPERTY BINDING on [disabled] and EVENT BINDING
+     on (click) and (click) on the overlay backdrop.
+  ──────────────────────────────────────────────────────────────-->
+@if (pendingDeleteId() !== null) {
+  <!--
+    EVENT BINDING on the overlay itself:
+    clicking outside the box calls cancelDelete() which sets
+    pendingDeleteId signal back to null, closing the dialog.
+  -->
+  <div class="overlay" (click)="cancelDelete()">
+
+    <!-- stopPropagation prevents a click inside the box from closing it -->
+    <div class="confirm-box" (click)="$event.stopPropagation()">
+      <h3>Confirm Delete</h3>
+
+      <!--
+        INTERPOLATION  {{ pendingDeleteId() }}
+        Shows which employee ID is about to be deleted.
+      -->
+      <p>
+        Delete employee <strong>#{{ pendingDeleteId() }}</strong>?
+        This cannot be undone.
+      </p>
+
+      <div class="confirm-actions">
+        <!--
+          PROPERTY BINDING  [disabled]="isDeleting()"
+          Disables both buttons while the HTTP request is in flight.
+        -->
+        <button class="btn btn-outline"
+                [disabled]="isDeleting()"
+                (click)="cancelDelete()">
+          Cancel
+        </button>
+
+        <button class="btn btn-delete"
+                [disabled]="isDeleting()"
+                (click)="doDelete()">
+          <!-- Conditional text via @if on a signal value -->
+          @if (isDeleting()) { Deleting... } @else { Yes, Delete }
+        </button>
+      </div>
+    </div>
+  </div>
+}

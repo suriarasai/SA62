@@ -1,257 +1,374 @@
-/*
- * styles.css
- *
- * Global stylesheet – minimal, utilitarian design.
- * No CSS framework is used; all styles are hand-written.
- *
- * Design intent: clean government-form aesthetic.
- * Monospace body font, sharp borders, no rounded corners.
- * Colour palette: white background, dark charcoal text, one blue accent.
- */
-
-/* ── CSS Reset & base ──────────────────────────────────────────────────── */
+/* --- Reset --- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* --- Variables --- */
+:root {
+  --color-bg:        #f5f5f5;
+  --color-surface:   #ffffff;
+  --color-border:    #d0d0d0;
+  --color-text:      #222222;
+  --color-muted:     #666666;
+  --color-link:      #1a56a0;
+  --color-link-hover:#0d3c78;
+  --color-btn:       #4a4a4a;
+  --color-btn-hover: #2a2a2a;
+  --color-btn-del:   #8b2222;
+  --color-btn-del-h: #6a1818;
+  --color-error:     #8b2222;
+  --color-ok:        #1a5c1a;
+  --color-header-bg: #e8e8e8;
+  --radius:          4px;
+  --font:            system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* --- Base --- */
 body {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font);
   font-size: 14px;
-  background: #f4f4f0;
-  color: #1a1a1a;
-  line-height: 1.6;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
 }
 
-/* ── App header ────────────────────────────────────────────────────────── */
-.app-header {
-  background: #1a1a1a;
-  color: #f4f4f0;
-  padding: 14px 24px;
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  border-bottom: 3px solid #0057b8;
+a {
+  color: var(--color-link);
+  text-decoration: none;
 }
 
-.app-title {
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
 }
 
-.app-subtitle {
-  font-size: 11px;
-  color: #aaa;
-  letter-spacing: 0.08em;
-}
-
-/* ── Main content area ─────────────────────────────────────────────────── */
-.app-main {
+/* --- Layout --- */
+.page-wrapper {
   max-width: 900px;
-  margin: 32px auto;
-  padding: 0 16px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
-/* ── List container ────────────────────────────────────────────────────── */
-.list-container {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 24px;
-}
-
-.list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #1a1a1a;
-}
-
-.list-header h2 {
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* ── Table ─────────────────────────────────────────────────────────────── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-th, td {
-  text-align: left;
-  padding: 9px 12px;
-  border: 1px solid #ccc;
-}
-
-th {
-  background: #1a1a1a;
-  color: #f4f4f0;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-tr:nth-child(even) td {
-  background: #f9f9f7;  /* Zebra striping for readability */
-}
-
-tr:hover td {
-  background: #eef4ff;  /* Highlight row on hover */
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-}
-
-/* ── Form container ────────────────────────────────────────────────────── */
-.form-container {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 28px;
-  max-width: 520px;
-}
-
-.form-container h2 {
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #1a1a1a;
-}
-
-/* ── Form groups ───────────────────────────────────────────────────────── */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+/* --- Page title --- */
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text);
   margin-bottom: 4px;
-  color: #555;
 }
 
-.form-group input {
-  border: 1px solid #bbb;
-  padding: 8px 10px;
-  font-family: inherit;
+.page-subtitle {
   font-size: 13px;
-  background: #fafafa;
+  color: var(--color-muted);
+  margin-bottom: 20px;
+}
+
+/* --- Toolbar (sits above the table) --- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* --- Search input --- */
+.search-input {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  width: 240px;
+  background: var(--color-surface);
+  color: var(--color-text);
   outline: none;
 }
 
-.form-group input:focus {
-  border-color: #0057b8;
-  background: #fff;
+.search-input:focus {
+  border-color: #888;
 }
 
-/* Red border applied when a field has a validation error */
-.input-error {
-  border-color: #c0392b !important;
-}
-
-/* ── Validation error messages ─────────────────────────────────────────── */
-.error-msg {
-  color: #c0392b;
-  font-size: 11px;
-  margin-top: 3px;
-}
-
-/* ── Required field indicator ──────────────────────────────────────────── */
-.required {
-  color: #c0392b;
-}
-
-/* ── Buttons ───────────────────────────────────────────────────────────── */
+/* --- Buttons --- */
 .btn {
-  padding: 8px 16px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border: 2px solid transparent;
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-btn);
+  color: #ffffff;
   cursor: pointer;
+  text-decoration: none;
+  line-height: 1.4;
 }
 
-.btn-primary {
-  background: #0057b8;
-  color: #fff;
-  border-color: #0057b8;
+.btn:hover {
+  background: var(--color-btn-hover);
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.btn-primary:hover {
-  background: #003f88;
-  border-color: #003f88;
+.btn-sm {
+  padding: 3px 9px;
+  font-size: 12px;
 }
 
-.btn-secondary {
-  background: #fff;
-  color: #1a1a1a;
-  border-color: #1a1a1a;
+.btn-outline {
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
-.btn-secondary:hover {
-  background: #1a1a1a;
-  color: #fff;
+.btn-outline:hover {
+  background: var(--color-header-bg);
+  color: var(--color-text);
 }
 
-.btn-danger {
-  background: #fff;
-  color: #c0392b;
-  border-color: #c0392b;
+.btn-delete {
+  background: var(--color-btn-del);
 }
 
-.btn-danger:hover {
-  background: #c0392b;
-  color: #fff;
+.btn-delete:hover {
+  background: var(--color-btn-del-h);
 }
 
-/* ── Form action row ───────────────────────────────────────────────────── */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Table --- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  background: var(--color-header-bg);
+  padding: 9px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+.col-actions {
+  white-space: nowrap;
+  width: 140px;
+}
+
+.action-btns {
+  display: flex;
+  gap: 6px;
+}
+
+/* --- Form card --- */
+.form-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 520px;
+}
+
+/* --- Form fields --- */
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+  margin-bottom: 5px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #888;
+}
+
+.field input.invalid,
+.field select.invalid {
+  border-color: var(--color-error);
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--color-error);
+  margin-top: 4px;
+}
+
+/* --- Form actions row --- */
 .form-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 10px;
+  margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-border);
 }
 
-/* ── Feedback messages ─────────────────────────────────────────────────── */
-.msg {
+/* --- Alerts / banners --- */
+.alert {
   padding: 10px 14px;
-  font-size: 12px;
-  margin-bottom: 16px;
-  border-left: 4px solid;
-}
-
-.msg-success {
-  background: #eafaf1;
-  border-color: #27ae60;
-  color: #1e8449;
-}
-
-.msg-error {
-  background: #fdf2f0;
-  border-color: #c0392b;
-  color: #c0392b;
-}
-
-/* ── Empty state ───────────────────────────────────────────────────────── */
-.empty-state {
-  color: #888;
-  font-style: italic;
-  padding: 20px 0;
+  border-radius: var(--radius);
   font-size: 13px;
+  margin-bottom: 14px;
+  border: 1px solid transparent;
+}
+
+.alert-error {
+  background: #fff0f0;
+  border-color: #dda0a0;
+  color: var(--color-error);
+}
+
+.alert-ok {
+  background: #f0fff0;
+  border-color: #90c090;
+  color: var(--color-ok);
+}
+
+/* --- Status text --- */
+.status-loading {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.status-empty {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+/* --- Confirm overlay --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.confirm-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 360px;
+  width: 90%;
+}
+
+.confirm-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.confirm-box p {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* --- Nav bar --- */
+.navbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  gap: 24px;
+}
+
+.navbar-brand {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.navbar-link {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.navbar-link:hover {
+  color: var(--color-text);
+}
+
+.navbar-link.active {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .search-input {
+    width: 100%;
+  }
 }

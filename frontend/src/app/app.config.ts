@@ -1,18 +1,20 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+// src/app/app.config.ts
+
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  provideRouter,
+  withComponentInputBinding,  // route params → input() signals
+} from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
-import 'zone.js'
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-        // Use zone-based change detection (coalesce events for performance)
-     provideZonelessChangeDetection(), 
+    provideZoneChangeDetection({ eventCoalescing: true }),
 
-    // HTTP client backed by the Fetch API
+    // withComponentInputBinding lets :id route params flow into input() signals
+    provideRouter(routes, withComponentInputBinding()),
+
     provideHttpClient(withFetch()),
-
-    provideRouter(routes)
-  ]
+  ],
 };
