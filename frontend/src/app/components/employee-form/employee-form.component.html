@@ -42,12 +42,12 @@
     <p class="status-loading">Loading employee data...</p>
   }
 
-  <!-- ═══════════════════════════════════════════════════════
+  <!-- 
        FORM CARD
-  ═══════════════════════════════════════════════════════════ -->
+   -->
   <div class="form-card">
 
-    <!-- ── NAME ──────────────────────────────────────────────
+    <!--  NAME 
 
       PROPERTY BINDING  [value]="name()"
         Seeds the <input> with the current signal value.
@@ -65,7 +65,7 @@
 
       PROPERTY BINDING  [disabled]="isPending()"
         Disables the field while an HTTP request is in flight.
-    ─────────────────────────────────────────────────────── -->
+     -->
     <div class="field">
       <label for="name">Full Name *</label>
       <input
@@ -83,7 +83,7 @@
       }
     </div>
 
-    <!-- ── DEPARTMENT ─────────────────────────────────────────
+    <!--  DEPARTMENT 
 
       PROPERTY BINDING  [disabled]="isPending()"
       EVENT BINDING     (change)="department.set(sel($event))"
@@ -93,7 +93,7 @@
         Each <option> compares the model() signal's current value
         to its own value so the correct option is highlighted
         when the form loads in edit mode.
-    ─────────────────────────────────────────────────────── -->
+     -->
     <div class="field">
       <label for="dept">Department *</label>
       <select
@@ -120,9 +120,9 @@
       }
     </div>
 
-    <!-- ── DESIGNATION ────────────────────────────────────────
+    <!--  DESIGNATION 
       Same pattern as Department.
-    ─────────────────────────────────────────────────────── -->
+     -->
     <div class="field">
       <label for="desig">Designation *</label>
       <select
@@ -145,7 +145,7 @@
       }
     </div>
 
-    <!-- ── SALARY ─────────────────────────────────────────────
+    <!--  SALARY 
 
       TWO-WAY BINDING pattern (manual, native input):
         [value]="salary()"          ← reads the model() signal (Property Binding)
@@ -156,7 +156,7 @@
         [(salary)]="salary"
       which the Angular compiler expands to exactly the same pair.
       Here, because we own the field, we use the pair directly.
-    ─────────────────────────────────────────────────────── -->
+     -->
     <div class="field">
       <label for="salary">Monthly Salary (SGD) * — min $5,500</label>
       <input
@@ -185,7 +185,7 @@
       }
     </div>
 
-    <!-- ── FORM ACTIONS ───────────────────────────────────────
+    <!--  FORM ACTIONS 
 
       PROPERTY BINDING  [disabled]="isPending() || success()"
         Both signals are read; either one being true disables the button.
@@ -195,7 +195,7 @@
 
       EVENT BINDING     (click)="router.navigate(['/employees'])"
         The Cancel button navigates away via a simple event binding.
-    ─────────────────────────────────────────────────────── -->
+     -->
     <div class="form-actions">
       <a class="btn btn-outline" routerLink="/employees">Cancel</a>
 
@@ -218,10 +218,10 @@
 
   </div><!-- /form-card -->
 
-  <!-- ── Live preview ──────────────────────────────────────────
+  <!--  Live preview 
        Demonstrates that INTERPOLATION of model() signals updates
        in real time as the user types — no extra wiring needed.
-  ─────────────────────────────────────────────────────────── -->
+   -->
   @if (name() || department() || designation() || (salary() != null && salary() !== '')) {
     <div style="margin-top:20px;">
       <p style="font-size:12px; color:#666; margin-bottom:6px; font-weight:600; text-transform:uppercase; letter-spacing:.4px;">

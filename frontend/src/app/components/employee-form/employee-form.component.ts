@@ -42,7 +42,7 @@ export class EmployeeFormComponent implements OnInit {
   private readonly router = inject(Router);
   readonly svc            = inject(EmployeeService);
 
-  // ── Dropdown option lists ─────────────────────────────────
+  //  Dropdown option lists 
   readonly departments  = DEPARTMENTS;
   readonly designations = DESIGNATIONS;
 
@@ -54,7 +54,7 @@ export class EmployeeFormComponent implements OnInit {
   //   /employees/42/edit     → id() === "42"       (edit mode)
   readonly id = input<string | undefined>(undefined);
 
-  // ── Form field signals ───────────────────────────────────
+  //  Form field signals 
   //
   //   signal() is used (not model()) so that withComponentInputBinding()
   //   in app.config.ts does not treat these as route inputs and
@@ -64,14 +64,14 @@ export class EmployeeFormComponent implements OnInit {
   readonly salary      = signal<number | ''>('');
   readonly designation = signal('');
 
-  // ── Simple UI state signals ───────────────────────────────
+  //  Simple UI state signals 
   readonly isPending   = signal(false);
   readonly serverError = signal<string | null>(null);
   readonly success     = signal(false);
   /** Turns true after the first submit attempt — gates validation display */
   readonly submitted   = signal(false);
 
-  // ── Computed signals (derived from model signals) ─────────
+  //  Computed signals (derived from model signals) 
   readonly isEditMode  = computed(() => !!this.id());
   readonly pageTitle   = computed(() =>
     this.isEditMode() ? `Edit Employee #${this.id()}` : 'New Employee'
@@ -105,7 +105,7 @@ export class EmployeeFormComponent implements OnInit {
     !this.nameError() && !this.salaryError() && !this.deptError() && !this.desigError()
   );
 
-  // ── Effect: when id() changes, load the employee for editing ──
+  //  Effect: when id() changes, load the employee for editing 
   constructor() {
     effect(() => {
       const rawId = this.id();
@@ -117,7 +117,7 @@ export class EmployeeFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // ── Load employee into form fields ────────────────────────
+  //  Load employee into form fields 
   private loadForEdit(id: number): void {
     this.isPending.set(true);
     this.serverError.set(null);
@@ -137,7 +137,7 @@ export class EmployeeFormComponent implements OnInit {
     });
   }
 
-  // ── Submit (create or update) ─────────────────────────────
+  //  Submit (create or update) 
   submit(): void {
     this.submitted.set(true);
     if (!this.isValid()) return;
@@ -179,17 +179,17 @@ export class EmployeeFormComponent implements OnInit {
     this.serverError.set(e?.error?.message ?? e?.message ?? 'Request failed.');
   }
 
-  // ── Event helper: reads typed value from an <input> ───────
+  //  Event helper: reads typed value from an <input> 
   str(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
 
-  // ── Event helper: reads typed value from a <select> ──────
+  //  Event helper: reads typed value from a <select> 
   sel(event: Event): string {
     return (event.target as HTMLSelectElement).value;
   }
 
-  // ── Event helper: reads a number from an <input type=number> ──
+  //  Event helper: reads a number from an <input type=number> 
   num(event: Event): number | '' {
     const v = (event.target as HTMLInputElement).value;
     return v === '' ? '' : Number(v);

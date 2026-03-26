@@ -18,7 +18,7 @@
     Avg. salary: ${{ svc.avgSalary() | number:'1.0-0' }}
   </p>
 
-  <!-- FEEDBACK BANNERS ──────────────────────────────────────── -->
+  <!-- FEEDBACK BANNERS  -->
 
   <!-- INTERPOLATION: {{ svc.error() }} -->
   @if (svc.error()) {
@@ -38,7 +38,7 @@
     </div>
   }
 
-  <!-- TOOLBAR ───────────────────────────────────────────────── -->
+  <!-- TOOLBAR  -->
   <div class="toolbar">
 
     <!--
@@ -65,14 +65,14 @@
     <a class="btn" routerLink="/employees/new">+ Add Employee</a>
   </div>
 
-  <!-- LOADING STATE ─────────────────────────────────────────── -->
+  <!-- LOADING STATE  -->
 
   <!-- INTERPOLATION of boolean signal: svc.isLoading() -->
   @if (svc.isLoading()) {
     <p class="status-loading">Loading...</p>
   }
 
-  <!-- EMPLOYEE TABLE ────────────────────────────────────────── -->
+  <!-- EMPLOYEE TABLE  -->
   @if (!svc.isLoading()) {
     <div class="table-wrap">
       <table>
@@ -140,11 +140,11 @@
 
 </div>
 
-<!-- CONFIRM DELETE DIALOG ─────────────────────────────────────
+<!-- CONFIRM DELETE DIALOG 
      Shown only when pendingDeleteId() is not null.
      Demonstrates PROPERTY BINDING on [disabled] and EVENT BINDING
      on (click) and (click) on the overlay backdrop.
-  ──────────────────────────────────────────────────────────────-->
+  -->
 @if (pendingDeleteId() !== null) {
   <!--
     EVENT BINDING on the overlay itself:

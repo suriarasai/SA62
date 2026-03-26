@@ -26,7 +26,7 @@ export class EmployeeListComponent implements OnInit {
 
   readonly svc = inject(EmployeeService);
 
-  // ── Local writable signals ─────────────────────────────────
+  //  Local writable signals 
 
   /**
    * searchTerm is a writable signal.
@@ -46,7 +46,7 @@ export class EmployeeListComponent implements OnInit {
   /** Feedback message shown after a delete attempt */
   readonly deleteMsg = signal<{ ok: boolean; text: string } | null>(null);
 
-  // ── Computed signals ───────────────────────────────────────
+  //  Computed signals 
 
   /**
    * filtered() recomputes automatically whenever searchTerm() or
@@ -62,13 +62,13 @@ export class EmployeeListComponent implements OnInit {
     );
   });
 
-  // ── Lifecycle ──────────────────────────────────────────────
+  //  Lifecycle 
 
   ngOnInit(): void {
     this.svc.loadAll();
   }
 
-  // ── Delete flow ────────────────────────────────────────────
+  //  Delete flow 
 
   /** Open confirm dialog for the given employee */
   askDelete(id: number): void {
