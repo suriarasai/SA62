@@ -1,0 +1,48 @@
+<!--
+  app.component.html
+
+  Root application template.
+
+  Structure:
+    <header>  – Application title bar, always visible
+    <main>    – Switches between the list view and the form view
+
+  View switching:
+    *ngIf="!showForm" → renders the employee list (default state)
+    *ngIf="showForm"  → renders the employee form (create/edit state)
+
+  Event binding:
+    (editEmployee)  – event from the list; carries Employee|null to AppComponent.onShowForm()
+    (saved)         – event from the form; triggers AppComponent.onSaved()
+    (cancelled)     – event from the form; triggers AppComponent.onCancelled()
+
+  Property binding:
+    [employeeToEdit] – passes selectedEmployee into the form component as an @Input()
+-->
+
+<header class="app-header">
+  <span class="app-title">Employee Management</span>
+  <span class="app-subtitle">Spring Boot REST + Angular</span>
+</header>
+
+<main class="app-main">
+
+  <!-- ── List view ─────────────────────────────────────────────────────── -->
+  <!-- Shown by default. Hidden while the form is open (not destroyed,
+       so @ViewChild keeps the reference alive for post-save refresh). -->
+  <app-employee-list
+    *ngIf="!showForm"
+    (editEmployee)="onShowForm($event)">
+  </app-employee-list>
+
+  <!-- ── Form view ─────────────────────────────────────────────────────── -->
+  <!-- Shown when the user clicks Add or Edit.
+       [employeeToEdit] drives create vs edit mode inside the form component. -->
+  <app-employee-form
+    *ngIf="showForm"
+    [employeeToEdit]="selectedEmployee"
+    (saved)="onSaved()"
+    (cancelled)="onCancelled()">
+  </app-employee-form>
+
+</main>
