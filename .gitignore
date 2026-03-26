@@ -29,3 +29,5 @@ choppee/target/*
 restfulapp/.mvn/wrapper/maven-wrapper.properties
 .vscode/settings.json
 agent.md
+.metadata/*
+.vscode/*

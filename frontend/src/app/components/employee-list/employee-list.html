@@ -1,0 +1,58 @@
+<div class="list-container">
+
+  <!--  Header  -->
+  <div class="list-header">
+    <h2>Employees</h2>
+    <button class="btn btn-primary" (click)="onAddNew()">+ Add Employee</button>
+  </div>
+
+  <!--  Feedback message bar  -->
+  @if (message()) {
+    <div class="msg" [class.msg-success]="isSuccess()" [class.msg-error]="!isSuccess()">
+      {{ message() }}
+    </div>
+  }
+  <!--  Empty state  -->
+  @if (isLoading()) {
+     <p class="empty-state">Loading employees...</p>
+  }
+  @if (!isLoading() && employees().length === 0) {  
+  <p class="empty-state">No employees found. Add one to get started.</p>
+  }
+  
+
+
+  <!--  Employees table  -->
+  @if (employees().length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Salary (SGD)</th>
+          <th>Designation</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- track by employee id for efficient DOM diffing -->
+        @for (emp of employees(); track emp.id) {
+          <tr>
+            <td>{{ emp.id }}</td>
+            <td>{{ emp.name }}</td>
+            <td>{{ emp.department }}</td>
+            <td>{{ emp.salary | number:'1.2-2' }}</td>
+            <td>{{ emp.designation }}</td>
+            <td class="actions">
+              <button class="btn btn-secondary" (click)="onEdit(emp)">Edit</button>
+              <button class="btn btn-danger"    (click)="onDelete(emp.id)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+</div>
+
