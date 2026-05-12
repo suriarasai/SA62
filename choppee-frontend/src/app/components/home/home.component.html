@@ -1,0 +1,165 @@
+<!-- home.component.html -->
+
+<div class="page-wrapper">
+
+  <!-- HERO BANNER -->
+  <section class="hero">
+    <div class="hero-content">
+      <!--
+        INTERPOLATION: static values are fine here;
+        all dynamic values below use signal() reads.
+      -->
+      <h1 class="hero-title">⚔️ Choppee</h1>
+      <p class="hero-subtitle">
+        Premium kitchen knives &amp; lumberjack gear for professionals and enthusiasts.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-hero" routerLink="/products">Shop Now</a>
+        @if (!auth.isLoggedIn()) {
+          <a class="btn btn-outline btn-hero" routerLink="/register">Create Account</a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!--
+    INTERPOLATION of signal:  addedMsg() is a writable signal.
+    It becomes non-null for 2 seconds after adding to cart.
+  -->
+  @if (addedMsg()) {
+    <div class="alert alert-ok">{{ addedMsg() }}</div>
+  }
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section">
+    <h2 class="section-title">Featured Products</h2>
+
+    <!--
+      INTERPOLATION of boolean signal: isLoading()
+    -->
+    @if (isLoading()) {
+      <p class="status-loading">Loading featured products...</p>
+    }
+
+    @if (!isLoading()) {
+      <div class="product-grid">
+        <!--
+          @for iterates the featuredProducts() writable signal.
+          trackBy: trackById() keeps the DOM stable.
+        -->
+        @for (p of featuredProducts(); track p.id) {
+          <div class="product-card">
+            @if (p.imageUrl) {
+              <img class="product-img" [src]="p.imageUrl" [alt]="p.name" />
+            } @else {
+              <div class="product-img-placeholder">🔪</div>
+            }
+            <div class="product-card-body">
+              <!-- INTERPOLATION: product fields -->
+              <h3 class="product-name">{{ p.name }}</h3>
+              <p class="product-brand">{{ p.brand }}</p>
+
+              <div class="product-price">
+                @if (p.discountPercent && p.discountPercent > 0) {
+                  <!--
+                    INTERPOLATION of computed value (effectivePrice method)
+                    Original price shown with strikethrough.
+                  -->
+                  <span class="price-original">{{ p.price | currency }}</span>
+                  <span class="price-discounted">
+                    {{ effectivePrice(p) | currency }}
+                  </span>
+                  <span class="discount-badge">-{{ p.discountPercent }}%</span>
+                } @else {
+                  <span class="price-current">{{ p.price | currency }}</span>
+                }
+              </div>
+
+              <div class="product-stock">
+                @if (p.stockQuantity && p.stockQuantity > 0) {
+                  <span class="in-stock">In Stock ({{ p.stockQuantity }})</span>
+                } @else {
+                  <span class="out-of-stock">Out of Stock</span>
+                }
+              </div>
+
+              <div class="product-actions">
+                <!--
+                  PROPERTY BINDING  [routerLink]
+                  Passes the product id into the route path expression.
+                -->
+                <a class="btn btn-sm btn-outline"
+                   [routerLink]="['/products', p.id]">
+                  View Details
+                </a>
+                @if (auth.isLoggedIn() && p.stockQuantity && p.stockQuantity > 0) {
+                  <!--
+                    EVENT BINDING  (click)="addToCart(id)"
+                    Calls addToCart() which calls CartService.addItem(),
+                    and then sets the addedMsg signal for 2 seconds.
+                  -->
+                  <button class="btn btn-sm" (click)="addToCart(p.id)">
+                    Add to Cart
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        @empty {
+          <p class="status-empty">No featured products available.</p>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- DEALS SECTION -->
+  <!--
+    INTERPOLATION of computed boolean signal: hasDeals()
+    The section only renders when there are deals.
+  -->
+  @if (hasDeals()) {
+    <section class="section">
+      <h2 class="section-title">🔥 Special Deals</h2>
+      <div class="product-grid">
+        @for (p of deals(); track p.id) {
+          <div class="product-card deal-card">
+            <div class="deal-ribbon">DEAL</div>
+            @if (p.imageUrl) {
+              <img class="product-img" [src]="p.imageUrl" [alt]="p.name" />
+            } @else {
+              <div class="product-img-placeholder">🪓</div>
+            }
+            <div class="product-card-body">
+              <h3 class="product-name">{{ p.name }}</h3>
+              <div class="product-price">
+                <span class="price-original">{{ p.price | currency }}</span>
+                <span class="price-discounted">
+                  {{ effectivePrice(p) | currency }}
+                </span>
+                <span class="discount-badge">-{{ p.discountPercent }}%</span>
+              </div>
+              <div class="product-actions">
+                <a class="btn btn-sm btn-outline"
+                   [routerLink]="['/products', p.id]">
+                  View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- CALL TO ACTION -->
+  @if (!auth.isLoggedIn()) {
+    <section class="cta-section">
+      <h2>Ready to shop?</h2>
+      <p>Create a free account and start building your collection.</p>
+      <a class="btn" routerLink="/register">Get Started</a>
+    </section>
+  }
+
+</div>

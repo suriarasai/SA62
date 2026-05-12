@@ -1,0 +1,139 @@
+<!-- product-list.component.html -->
+
+<div class="page-wrapper">
+
+  <h1 class="page-title">Products</h1>
+  <!--
+    INTERPOLATION of computed signal: filtered().length
+    Re-renders automatically whenever searchTerm or selectedCategory changes.
+  -->
+  <p class="page-subtitle">
+    {{ filtered().length }} of {{ svc.total() }} products
+  </p>
+
+  <!-- ERROR BANNER -->
+  @if (svc.error()) {
+    <div class="alert alert-error">{{ svc.error() }}</div>
+  }
+
+  <!-- ADDED TO CART FEEDBACK -->
+  @if (addedMsg()) {
+    <div class="alert alert-ok">{{ addedMsg() }}</div>
+  }
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <!--
+      EVENT BINDING  (input)="searchTerm.set(...)"
+      PROPERTY BINDING  [value]="searchTerm()"
+      Together these form the two-way binding pattern for a native <input>.
+    -->
+    <input
+      class="search-input"
+      type="search"
+      placeholder="Search products..."
+      [value]="searchTerm()"
+      (input)="searchTerm.set(getVal($event))"
+    />
+  </div>
+
+  <!-- CATEGORY FILTER -->
+  <div class="category-filter">
+    <!--
+      PROPERTY BINDING  [class.active]="selectedCategory() === null"
+      EVENT BINDING     (click)="selectCategory(null)"
+    -->
+    <button
+      class="cat-btn"
+      [class.active]="selectedCategory() === null"
+      (click)="selectCategory(null)">
+      All
+    </button>
+    @for (cat of svc.categories(); track cat.id) {
+      <button
+        class="cat-btn"
+        [class.active]="selectedCategory() === cat.id"
+        (click)="selectCategory(cat.id)">
+        {{ cat.name }}
+      </button>
+    }
+  </div>
+
+  <!-- LOADING STATE -->
+  @if (svc.isLoading()) {
+    <p class="status-loading">Loading products...</p>
+  }
+
+  <!-- PRODUCT GRID -->
+  @if (!svc.isLoading()) {
+    <div class="product-grid">
+      <!--
+        @for iterates filtered() — a computed signal.
+        Rerenders only when inputs change (reactive, no subscription needed).
+      -->
+      @for (p of filtered(); track p.id) {
+        <div class="product-card">
+          @if (p.imageUrl) {
+            <img class="product-img" [src]="p.imageUrl" [alt]="p.name" />
+          } @else {
+            <div class="product-img-placeholder">🔪</div>
+          }
+          <div class="product-card-body">
+            <div class="product-category-tag">
+              {{ p.category?.name }}
+            </div>
+            <h3 class="product-name">{{ p.name }}</h3>
+            <p class="product-brand">{{ p.brand }}</p>
+
+            <div class="product-price">
+              @if (p.discountPercent && p.discountPercent > 0) {
+                <span class="price-original">{{ p.price | currency }}</span>
+                <span class="price-discounted">
+                  {{ effectivePrice(p) | currency }}
+                </span>
+                <span class="discount-badge">-{{ p.discountPercent }}%</span>
+              } @else {
+                <span class="price-current">{{ p.price | currency }}</span>
+              }
+            </div>
+
+            <div class="product-stock">
+              @if (p.stockQuantity && p.stockQuantity > 0) {
+                <span class="in-stock">In Stock</span>
+              } @else {
+                <span class="out-of-stock">Out of Stock</span>
+              }
+            </div>
+
+            <div class="product-actions">
+              <a class="btn btn-sm btn-outline"
+                 [routerLink]="['/products', p.id]">
+                Details
+              </a>
+              @if (auth.isLoggedIn() && p.stockQuantity && p.stockQuantity > 0) {
+                <!--
+                  PROPERTY BINDING  [disabled]="addingProductId() === p.id"
+                  Disables the button while the HTTP call is in flight.
+                -->
+                <button
+                  class="btn btn-sm"
+                  [disabled]="addingProductId() === p.id"
+                  (click)="addToCart(p.id)">
+                  @if (addingProductId() === p.id) { Adding... } @else { Add to Cart }
+                </button>
+              }
+              @if (!auth.isLoggedIn()) {
+                <a class="btn btn-sm btn-outline" routerLink="/login">Login to Buy</a>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      @empty {
+        <p class="status-empty">No products match your search.</p>
+      }
+    </div>
+  }
+
+</div>

@@ -1,0 +1,139 @@
+<!-- product-detail.component.html -->
+
+<div class="page-wrapper">
+
+  <!-- BACK LINK -->
+  <a class="back-link" routerLink="/products">← Back to Products</a>
+
+  <!-- LOADING -->
+  @if (svc.isLoading()) {
+    <p class="status-loading">Loading product...</p>
+  }
+
+  <!-- ERROR -->
+  @if (svc.error()) {
+    <div class="alert alert-error">{{ svc.error() }}</div>
+  }
+
+  <!-- PRODUCT DETAIL LAYOUT -->
+  @if (svc.selected(); as product) {
+
+    <div class="detail-layout">
+
+      <!-- LEFT: Image -->
+      <div class="detail-image-col">
+        @if (product.imageUrl) {
+          <img class="detail-img" [src]="product.imageUrl" [alt]="product.name" />
+        } @else {
+          <div class="detail-img-placeholder">🔪</div>
+        }
+      </div>
+
+      <!-- RIGHT: Info -->
+      <div class="detail-info-col">
+
+        <div class="product-category-tag">{{ product.category?.name }}</div>
+        <h1 class="page-title">{{ product.name }}</h1>
+        <p class="product-brand">by {{ product.brand }}</p>
+
+        <!-- PRICE BLOCK -->
+        <div class="detail-price">
+          @if (product.discountPercent && product.discountPercent > 0) {
+            <!--
+              INTERPOLATION of computed signals: effectivePrice(), savingsAmount()
+              Both recompute automatically when svc.selected() changes.
+            -->
+            <span class="price-original">{{ product.price | currency }}</span>
+            <span class="price-discounted large">{{ effectivePrice() | currency }}</span>
+            <span class="discount-badge large">-{{ product.discountPercent }}%</span>
+            <p class="savings-note">You save {{ savingsAmount() | currency }}</p>
+          } @else {
+            <span class="price-current large">{{ product.price | currency }}</span>
+          }
+        </div>
+
+        <!-- STOCK -->
+        <div class="product-stock" style="margin: 12px 0;">
+          <!--
+            INTERPOLATION of computed signal: isInStock()
+          -->
+          @if (isInStock()) {
+            <span class="in-stock">✓ In Stock ({{ product.stockQuantity }} available)</span>
+          } @else {
+            <span class="out-of-stock">✗ Out of Stock</span>
+          }
+        </div>
+
+        <!-- DESCRIPTION -->
+        @if (product.description) {
+          <p class="detail-description">{{ product.description }}</p>
+        }
+
+        <!-- TAGS -->
+        @if (product.tags && product.tags.length > 0) {
+          <div class="tags">
+            @for (tag of product.tags; track tag.id) {
+              <span class="tag">{{ tag.name }}</span>
+            }
+          </div>
+        }
+
+        <!-- ADD TO CART -->
+        @if (auth.isLoggedIn()) {
+          @if (isInStock()) {
+            <div class="add-to-cart-row">
+              <!-- Quantity selector using Event Binding + computed signals -->
+              <div class="qty-selector">
+                <!--
+                  EVENT BINDING  (click)="decreaseQty()"
+                  PROPERTY BINDING  [disabled]="quantity() <= 1"
+                -->
+                <button class="qty-btn"
+                        [disabled]="quantity() <= 1"
+                        (click)="decreaseQty()">−</button>
+                <!--
+                  INTERPOLATION of writable signal: quantity()
+                -->
+                <span class="qty-value">{{ quantity() }}</span>
+                <button class="qty-btn"
+                        [disabled]="quantity() >= maxQty()"
+                        (click)="increaseQty()">+</button>
+              </div>
+
+              <!--
+                PROPERTY BINDING  [disabled]="isAdding()"
+                EVENT BINDING     (click)="addToCart()"
+              -->
+              <button class="btn"
+                      [disabled]="isAdding()"
+                      (click)="addToCart()">
+                @if (isAdding()) { Adding... } @else { Add to Cart }
+              </button>
+            </div>
+
+            <!-- Success message -->
+            @if (addedMsg()) {
+              <div class="alert alert-ok" style="margin-top: 12px;">
+                {{ addedMsg() }}
+              </div>
+            }
+          }
+        } @else {
+          <p style="margin-top: 16px;">
+            <a routerLink="/login">Login</a> to add items to your cart.
+          </p>
+        }
+
+        <!-- CART ERROR -->
+        @if (cartSvc.error()) {
+          <div class="alert alert-error" style="margin-top: 12px;">
+            {{ cartSvc.error() }}
+          </div>
+        }
+
+      </div><!-- /detail-info-col -->
+    </div><!-- /detail-layout -->
+
+  }
+
+</div>

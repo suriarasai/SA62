@@ -1,0 +1,76 @@
+<!-- login.component.html -->
+
+<div class="page-wrapper auth-page">
+
+  <h1 class="page-title">Login</h1>
+  <p class="page-subtitle">Welcome back to Choppee!</p>
+
+  <!-- SERVER ERROR BANNER -->
+  @if (serverError()) {
+    <div class="alert alert-error">{{ serverError() }}</div>
+  }
+
+  <div class="form-card">
+
+    <!--  USERNAME 
+      PROPERTY BINDING  [value]="username()"
+      EVENT BINDING     (input)="username.set(str($event))"
+      PROPERTY BINDING  [class.invalid]="!!usernameError()"
+    -->
+    <div class="field">
+      <label for="username">Username</label>
+      <input
+        id="username"
+        type="text"
+        placeholder="Your username"
+        [value]="username()"
+        [class.invalid]="!!usernameError()"
+        [disabled]="isPending()"
+        (input)="username.set(str($event))"
+      />
+      @if (usernameError()) {
+        <span class="field-error">{{ usernameError() }}</span>
+      }
+    </div>
+
+    <!--  PASSWORD 
+      PROPERTY BINDING  [value]="password()"
+      EVENT BINDING     (input)="password.set(str($event))"
+    -->
+    <div class="field">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Your password"
+        [value]="password()"
+        [class.invalid]="!!passwordError()"
+        [disabled]="isPending()"
+        (input)="password.set(str($event))"
+      />
+      @if (passwordError()) {
+        <span class="field-error">{{ passwordError() }}</span>
+      }
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <!--
+        EVENT BINDING  (click)="submit()"
+        PROPERTY BINDING  [disabled]="isPending()"
+      -->
+      <button class="btn"
+              style="width:100%;"
+              [disabled]="isPending()"
+              (click)="submit()">
+        @if (isPending()) { Logging in... } @else { Login }
+      </button>
+    </div>
+
+    <p class="auth-link">
+      Don't have an account? <a routerLink="/register">Register here</a>
+    </p>
+
+  </div>
+
+</div>

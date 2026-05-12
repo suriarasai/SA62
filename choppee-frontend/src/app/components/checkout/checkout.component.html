@@ -1,0 +1,129 @@
+<!-- checkout.component.html -->
+
+<div class="page-wrapper">
+
+  <h1 class="page-title">Checkout</h1>
+  <p class="page-subtitle">Review your order and enter shipping details.</p>
+
+  <!-- ERROR BANNER -->
+  @if (serverError()) {
+    <div class="alert alert-error">{{ serverError() }}</div>
+  }
+
+  <!-- SUCCESS BANNER -->
+  @if (success()) {
+    <div class="alert alert-ok">
+      ✓ Order placed successfully! Redirecting to your order...
+    </div>
+  }
+
+  <div class="checkout-layout">
+
+    <!-- LEFT: Order summary -->
+    <div class="order-summary">
+      <h2 class="section-title">Order Summary</h2>
+
+      @if (cartSvc.isLoading()) {
+        <p class="status-loading">Loading cart...</p>
+      }
+
+      @if (!cartSvc.isLoading()) {
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of cartItems(); track item.id) {
+                <tr>
+                  <td>{{ item.product.name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.subtotal | currency }}</td>
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align:right; font-weight:600;">Total:</td>
+                <!--
+                  INTERPOLATION of computed signal: cartTotal()
+                -->
+                <td style="font-weight:700;">{{ cartTotal() | currency }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      }
+    </div>
+
+    <!-- RIGHT: Shipping form -->
+    <div class="form-card">
+      <h2 class="section-title">Shipping Details</h2>
+
+      <!--  SHIPPING ADDRESS 
+        PROPERTY BINDING  [value]="shippingAddress()"
+        EVENT BINDING     (input)="shippingAddress.set(str($event))"
+        PROPERTY BINDING  [class.invalid]="!!addrError()"
+        PROPERTY BINDING  [disabled]="isPending() || success()"
+      -->
+      <div class="field">
+        <label for="addr">Shipping Address *</label>
+        <textarea
+          id="addr"
+          rows="3"
+          placeholder="123 Main St, Singapore 123456"
+          [value]="shippingAddress()"
+          [class.invalid]="!!addrError()"
+          [disabled]="isPending() || success()"
+          (input)="shippingAddress.set(str($event))">
+        </textarea>
+        @if (addrError()) {
+          <span class="field-error">{{ addrError() }}</span>
+        }
+      </div>
+
+      <!--  NOTES (optional) 
+        PROPERTY BINDING  [value]="notes()"
+        EVENT BINDING     (input)="notes.set(str($event))"
+      -->
+      <div class="field">
+        <label for="notes">Order Notes (optional)</label>
+        <textarea
+          id="notes"
+          rows="2"
+          placeholder="Leave at door, call before delivery, etc."
+          [value]="notes()"
+          [disabled]="isPending() || success()"
+          (input)="notes.set(str($event))">
+        </textarea>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="form-actions">
+        <a class="btn btn-outline" routerLink="/cart">Back to Cart</a>
+        <!--
+          PROPERTY BINDING  [disabled]="isPending() || success()"
+          EVENT BINDING     (click)="submit()"
+        -->
+        <button class="btn"
+                [disabled]="isPending() || success()"
+                (click)="submit()">
+          <!--
+            @if on signal inside button label
+          -->
+          @if (isPending() && !success()) {
+            Placing Order...
+          } @else {
+            Place Order — {{ cartTotal() | currency }}
+          }
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /checkout-layout -->
+
+</div>
