@@ -1,0 +1,143 @@
+<!-- cart.component.html -->
+
+<div class="page-wrapper">
+
+  <h1 class="page-title">My Cart</h1>
+
+  <!-- ERROR BANNER -->
+  @if (cartSvc.error()) {
+    <div class="alert alert-error">{{ cartSvc.error() }}</div>
+  }
+
+  <!-- UPDATE MESSAGE -->
+  @if (updateMsg()) {
+    <div class="alert"
+         [class.alert-ok]="updateMsg()!.ok"
+         [class.alert-error]="!updateMsg()!.ok">
+      {{ updateMsg()!.text }}
+    </div>
+  }
+
+  <!-- LOADING -->
+  @if (cartSvc.isLoading()) {
+    <p class="status-loading">Loading cart...</p>
+  }
+
+  <!-- EMPTY CART -->
+  @if (!cartSvc.isLoading() && isEmpty()) {
+    <div class="empty-cart">
+      <p class="status-empty">Your cart is empty.</p>
+      <a class="btn" routerLink="/products">Browse Products</a>
+    </div>
+  }
+
+  <!-- CART ITEMS TABLE -->
+  @if (!cartSvc.isLoading() && !isEmpty()) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Qty</th>
+            <th>Subtotal</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--
+            @for iterates cartSvc.cart()!.items — a signal value.
+            The table re-renders automatically when CartService.cart() changes.
+          -->
+          @for (item of cartSvc.cart()!.items; track item.id) {
+            <tr>
+              <td>
+                <a [routerLink]="['/products', item.product.id]">
+                  {{ item.product.name }}
+                </a>
+                <br /><small>{{ item.product.brand }}</small>
+              </td>
+              <td>{{ item.product.price | currency }}</td>
+              <td>
+                <!--
+                  EVENT BINDING  (change)="onQtyChange(id, $event)"
+                  PROPERTY BINDING  [value]="item.quantity"
+                  PROPERTY BINDING  [disabled]="updatingItemId() === item.id"
+                -->
+                <input
+                  class="qty-input"
+                  type="number"
+                  [value]="item.quantity"
+                  [disabled]="updatingItemId() === item.id"
+                  min="1"
+                  [max]="item.product.stockQuantity"
+                  (change)="onQtyChange(item.id, $event)"
+                />
+              </td>
+              <td>
+                <!--
+                  INTERPOLATION: item.subtotal is calculated on the server
+                  and returned in the Cart response.
+                -->
+                {{ item.subtotal | currency }}
+              </td>
+              <td class="col-actions">
+                <!--
+                  EVENT BINDING  (click)="askRemove(id)"
+                -->
+                <button class="btn btn-sm btn-delete"
+                        (click)="askRemove(item.id)">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align:right; font-weight:600;">Total:</td>
+            <!--
+              INTERPOLATION of computed signal: cartSvc.total()
+              Updates automatically when items change.
+            -->
+            <td colspan="2" style="font-weight:700; font-size:16px;">
+              {{ cartSvc.total() | currency }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- CART ACTIONS -->
+    <div class="cart-actions">
+      <a class="btn btn-outline" routerLink="/products">Continue Shopping</a>
+      <a class="btn" routerLink="/checkout">Proceed to Checkout</a>
+    </div>
+  }
+
+</div>
+
+<!-- CONFIRM REMOVE DIALOG -->
+@if (confirmRemoveId() !== null) {
+  <div class="overlay" (click)="cancelRemove()">
+    <div class="confirm-box" (click)="$event.stopPropagation()">
+      <h3>Remove Item</h3>
+      <p>Remove item <strong>#{{ confirmRemoveId() }}</strong> from your cart?</p>
+      <div class="confirm-actions">
+        <!--
+          PROPERTY BINDING  [disabled]="isRemoving()"
+        -->
+        <button class="btn btn-outline"
+                [disabled]="isRemoving()"
+                (click)="cancelRemove()">
+          Cancel
+        </button>
+        <button class="btn btn-delete"
+                [disabled]="isRemoving()"
+                (click)="doRemove()">
+          @if (isRemoving()) { Removing... } @else { Yes, Remove }
+        </button>
+      </div>
+    </div>
+  </div>
+}

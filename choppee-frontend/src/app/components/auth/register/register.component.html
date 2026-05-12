@@ -1,0 +1,137 @@
+<!-- register.component.html -->
+
+<div class="page-wrapper auth-page">
+
+  <h1 class="page-title">Create Account</h1>
+  <p class="page-subtitle">Join Choppee to start shopping.</p>
+
+  <!-- SERVER ERROR BANNER -->
+  @if (serverError()) {
+    <div class="alert alert-error">{{ serverError() }}</div>
+  }
+
+  <!-- SUCCESS BANNER -->
+  @if (success()) {
+    <div class="alert alert-ok">Account created! Redirecting...</div>
+  }
+
+  <div class="form-card">
+
+    <!--  USERNAME -->
+    <div class="field">
+      <label for="username">Username *</label>
+      <input
+        id="username"
+        type="text"
+        placeholder="e.g. john_doe"
+        [value]="username()"
+        [class.invalid]="!!usernameError()"
+        [disabled]="isPending() || success()"
+        (input)="username.set(str($event))"
+      />
+      @if (usernameError()) {
+        <span class="field-error">{{ usernameError() }}</span>
+      }
+    </div>
+
+    <!--  EMAIL -->
+    <div class="field">
+      <label for="email">Email *</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="you@example.com"
+        [value]="email()"
+        [class.invalid]="!!emailError()"
+        [disabled]="isPending() || success()"
+        (input)="email.set(str($event))"
+      />
+      @if (emailError()) {
+        <span class="field-error">{{ emailError() }}</span>
+      }
+    </div>
+
+    <!--  PASSWORD -->
+    <div class="field">
+      <label for="password">Password * (min 6 chars)</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Choose a strong password"
+        [value]="password()"
+        [class.invalid]="!!passwordError()"
+        [disabled]="isPending() || success()"
+        (input)="password.set(str($event))"
+      />
+      @if (passwordError()) {
+        <span class="field-error">{{ passwordError() }}</span>
+      }
+    </div>
+
+    <!--  FIRST NAME -->
+    <div class="field">
+      <label for="first-name">First Name *</label>
+      <input
+        id="first-name"
+        type="text"
+        placeholder="John"
+        [value]="firstName()"
+        [class.invalid]="!!firstNameError()"
+        [disabled]="isPending() || success()"
+        (input)="firstName.set(str($event))"
+      />
+      @if (firstNameError()) {
+        <span class="field-error">{{ firstNameError() }}</span>
+      }
+    </div>
+
+    <!--  LAST NAME -->
+    <div class="field">
+      <label for="last-name">Last Name *</label>
+      <input
+        id="last-name"
+        type="text"
+        placeholder="Doe"
+        [value]="lastName()"
+        [class.invalid]="!!lastNameError()"
+        [disabled]="isPending() || success()"
+        (input)="lastName.set(str($event))"
+      />
+      @if (lastNameError()) {
+        <span class="field-error">{{ lastNameError() }}</span>
+      }
+    </div>
+
+    <!--  BIRTH DATE (optional) -->
+    <div class="field">
+      <label for="birth-date">Date of Birth (optional)</label>
+      <input
+        id="birth-date"
+        type="date"
+        [value]="birthDate()"
+        [disabled]="isPending() || success()"
+        (input)="birthDate.set(str($event))"
+      />
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <button class="btn"
+              style="width:100%;"
+              [disabled]="isPending() || success()"
+              (click)="submit()">
+        @if (isPending() && !success()) {
+          Creating Account...
+        } @else {
+          Create Account
+        }
+      </button>
+    </div>
+
+    <p class="auth-link">
+      Already have an account? <a routerLink="/login">Login here</a>
+    </p>
+
+  </div>
+
+</div>

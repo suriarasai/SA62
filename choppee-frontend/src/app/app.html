@@ -1,0 +1,64 @@
+<!-- app.html — Root template with navigation bar -->
+
+<!-- ──────────────────────────────────────────────────────────
+     TOP NAVIGATION BAR
+     INTERPOLATION  {{ auth.username() }}   — reads computed signal
+     PROPERTY BINDING  [class.active]       — from routerLinkActive
+     EVENT BINDING     (click)="auth.logout()"
+────────────────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <a class="navbar-brand" routerLink="/home">🔪 Choppee</a>
+
+  <div class="navbar-links">
+    <a class="navbar-link" routerLink="/home"
+       routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </a>
+    <a class="navbar-link" routerLink="/products"
+       routerLinkActive="active">
+      Products
+    </a>
+
+    <!--
+      PROPERTY BINDING  [routerLink]
+      Shown only when logged in — auth.isLoggedIn() is a computed signal.
+    -->
+    @if (auth.isLoggedIn()) {
+      <a class="navbar-link" routerLink="/cart" routerLinkActive="active">
+        Cart
+        <!--
+          INTERPOLATION  {{ cart.itemCount() }}
+          itemCount() is a computed signal from CartService;
+          updates automatically when items are added/removed.
+        -->
+        @if (cart.itemCount() > 0) {
+          <span class="cart-badge">{{ cart.itemCount() }}</span>
+        }
+      </a>
+      <a class="navbar-link" routerLink="/orders" routerLinkActive="active">
+        Orders
+      </a>
+    }
+  </div>
+
+  <div class="navbar-user">
+    @if (auth.isLoggedIn()) {
+      <!-- INTERPOLATION: computed signal value -->
+      <span class="navbar-username">{{ auth.username() }}</span>
+      <!--
+        EVENT BINDING  (click)="auth.logout()"
+        Clicking calls logout(), which sets the token signal to null
+        and navigates to /login.
+      -->
+      <button class="btn btn-sm btn-outline" (click)="auth.logout()">
+        Logout
+      </button>
+    } @else {
+      <a class="btn btn-sm" routerLink="/login">Login</a>
+      <a class="btn btn-sm btn-outline" routerLink="/register">Register</a>
+    }
+  </div>
+</nav>
+
+<!-- Routed page renders here -->
+<router-outlet />

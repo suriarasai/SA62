@@ -1,0 +1,78 @@
+<!-- order-list.component.html -->
+
+<div class="page-wrapper">
+
+  <h1 class="page-title">My Orders</h1>
+  <!--
+    INTERPOLATION of computed signal: orderSvc.orderCount()
+    Reacts to any change in the orders signal.
+  -->
+  <p class="page-subtitle">{{ orderSvc.orderCount() }} orders placed</p>
+
+  <!-- ERROR -->
+  @if (orderSvc.error()) {
+    <div class="alert alert-error">{{ orderSvc.error() }}</div>
+  }
+
+  <!-- LOADING -->
+  @if (orderSvc.isLoading()) {
+    <p class="status-loading">Loading orders...</p>
+  }
+
+  <!-- EMPTY STATE -->
+  @if (!orderSvc.isLoading() && orderSvc.orders().length === 0) {
+    <div class="empty-cart">
+      <p class="status-empty">You haven't placed any orders yet.</p>
+      <a class="btn" routerLink="/products">Start Shopping</a>
+    </div>
+  }
+
+  <!-- ORDERS TABLE -->
+  @if (!orderSvc.isLoading() && orderSvc.orders().length > 0) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--
+            @for iterates orderSvc.orders() — a writable signal from the service.
+            The table updates automatically when loadAll() sets new data.
+          -->
+          @for (order of orderSvc.orders(); track order.id) {
+            <tr>
+              <td>#{{ order.id }}</td>
+              <td>{{ order.orderDate | date:'mediumDate' }}</td>
+              <td>{{ order.totalQuantity ?? order.items.length }}</td>
+              <td>{{ order.totalAmount | currency }}</td>
+              <td>
+                <!--
+                  PROPERTY BINDING  [class]
+                  Applies status-specific CSS class based on the status string.
+                -->
+                <span class="status-badge"
+                      [class]="'status-' + order.status.toLowerCase()">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td class="col-actions">
+                <a class="btn btn-sm btn-outline"
+                   [routerLink]="['/orders', order.id]">
+                  View
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>
